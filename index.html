@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的第一个 WebGIS 页面</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        /* 2. 必须给地图容器设置高度，否则地图是隐形的 */
+        #map { 
+            height: 600px; 
+            width: 100%;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>我的第一个地图</h1>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // 5. 初始化地图：[纬度, 经度], 缩放等级
+        // 注意：Leaflet 默认是 [纬度, 经度]，这和很多 GIS 软件的 [经度, 纬度] 相反！
+        const map = L.map('map').setView([36.0497, 103.8585], 15); 
+
+        // 6. 加载底图：这里使用的是 OpenStreetMap (OSM)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 7. 添加一个标记点 (Marker)
+        const marker = L.marker([36.0497, 103.8585]).addTo(map);
+        marker.bindPopup("<b>你好！</b><br>我在这儿。").openPopup();
+    </script>
+</body>
+</html>
