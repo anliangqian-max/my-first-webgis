@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
-        /* 2. 必须给地图容器设置高度，否则地图是隐形的 */
+        /* 必须给地图容器设置高度，否则地图是隐形的 */
         #map { 
             height: 600px; 
             width: 100%;
@@ -23,16 +23,28 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // 5. 初始化地图：[纬度, 经度], 缩放等级
-        // 注意：Leaflet 默认是 [纬度, 经度]，这和很多 GIS 软件的 [经度, 纬度] 相反！
+        // 1. 初始化地图：[纬度, 经度], 缩放等级
         const map = L.map('map').setView([36.0497, 103.8585], 15); 
 
-        // 6. 加载底图：这里使用的是 OpenStreetMap (OSM)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+        // 2. ★★★ 请在这里填入你申请到的天地图 tk ★★★
+        const tk = "746c652f7654bc8233f70343c8ca9f5f"; 
 
-        // 7. 添加一个标记点 (Marker)
+        // 3. 加载天地图：卫星影像底图 (img_w)
+        const tdtImg = L.tileLayer(`https://t{s}.tianditu.gov.cn/DataServer?T=img_w&x={x}&y={y}&l={z}&tk=${tk}`, {
+            subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
+            attribution: '© 天地图'
+        });
+
+        // 4. 加载天地图：地名和街道注记 (cia_w)，方便认路
+        const tdtCia = L.tileLayer(`https://t{s}.tianditu.gov.cn/DataServer?T=cia_w&x={x}&y={y}&l={z}&tk=${tk}`, {
+            subdomains: ['0', '1', '2', '3', '4', '5', '6', '7']
+        });
+
+        // 5. 将底图和文字注记一起添加到地图上
+        tdtImg.addTo(map);
+        tdtCia.addTo(map);
+
+        // 6. 添加那个带有专属留言的标记点
         const marker = L.marker([36.0497, 103.8585]).addTo(map);
         marker.bindPopup("<b>你好呀！</b><br>我在这儿学习呢，而且很想你。").openPopup();
     </script>
